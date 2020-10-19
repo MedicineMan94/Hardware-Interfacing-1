@@ -1,0 +1,55 @@
+const int potmeterPin = A5;                                 //Potmeter aangesluten op pin A5             
+      int potmeterWaarde = 0;                               //startwaarde van de potmeter is 0
+
+void setup() {
+//pinnen definieren waar de LED op staan aangesloten als uitgangen
+pinMode (1, OUTPUT);                                        
+pinMode (2, OUTPUT); 
+pinMode (3, OUTPUT);  
+pinMode (4, OUTPUT); 
+pinMode (5, OUTPUT);
+pinMode (6, OUTPUT); 
+pinMode (7, OUTPUT);
+}
+
+void loop() {
+
+  potmeterWaarde = analogRead(potmeterPin);                 // de waarde van de potmeter inlezen(tussen de 0 en 1023)
+  int mapWaarde = map(potmeterWaarde, 0 , 1023, 0, 8);      // potmeter waarde omzetten naar een waarde tussen de 0 en 8
+  
+if (mapWaarde >= 1){                                        //als omgezette potmeterwaarde groter of gelijk is aan 1:
+  digitalWrite(1, HIGH);                                    // zet pin 1 aan
+  }
+  
+if (mapWaarde >= 2){                                        //als omgezette potmeterwaarde groter of gelijk is aan 2:
+  digitalWrite(2, HIGH);                                    // zet pin 2 aan
+  }
+  
+if (mapWaarde >= 3){                                        //als omgezette potmeterwaarde groter of gelijk is aan 3:
+  digitalWrite(3, HIGH);                                    // zet pin 3 aan
+  }
+  
+if (mapWaarde >= 4){                                        //als omgezette potmeterwaarde groter of gelijk is aan 4:
+  digitalWrite(4, HIGH);                                    // zet pin 4 aan
+  }
+  
+if (mapWaarde >= 5){                                        //als omgezette potmeterwaarde groter of gelijk is aan 5:
+  digitalWrite(5, HIGH);                                    // zet pin 5 aan
+  }
+  
+if (mapWaarde >= 6){                                        //als omgezette potmeterwaarde groter of gelijk is aan 6:
+  digitalWrite(6, HIGH);                                    // zet pin 6 aan
+  }
+  
+if (mapWaarde >= 7){                                        //als omgezette potmeterwaarde groter of gelijk is aan 7:
+  digitalWrite(7, HIGH);                                    // zet pin 7 aan
+  }
+
+    digitalWrite(1, LOW);                                   //Zet pin 1 uit
+    digitalWrite(2, LOW);                                   //Zet pin 2 uit
+    digitalWrite(3, LOW);                                   //Zet pin 3 uit
+    digitalWrite(4, LOW);                                   //Zet pin 4 uit
+    digitalWrite(5, LOW);                                   //Zet pin 5 uit
+    digitalWrite(6, LOW);                                   //Zet pin 6 uit
+    digitalWrite(7, LOW);                                   //Zet pin 7 uit
+}
