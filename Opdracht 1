@@ -1,0 +1,22 @@
+int pinLijst[] = {1, 2, 3, 4, 5, 6, 7, 8};  //Decalreren van de pinnen waar de LEDs op zijn aangesloten
+int vertraging = 100;                       //Vertraging declareren (100ms)
+
+void setup(){}
+
+void loop() {
+// deze for is om teller op te hogen (bijvoorbeeld van links naar rechts) 
+for (int teller=0;teller<7;teller++) {    //als teller 0 is en onder de 7 wordt teller met één opgehoog
+digitalWrite(pinLijst[teller], HIGH);     // pin met de huidige waarde van teller wordt aangezet
+delay(vertraging);                        // Vertraging
+digitalWrite(pinLijst[teller], LOW);      // pin met de huidige waarde van teller wordt uitgezet
+delay(vertraging);
+}
+
+// deze for is om teller af te trekken (bijvoorbeeld van rechts naar links) 
+for (int teller=7;teller>=1;teller--) {   //als teller 7 is en groter dan 1 wordt er één van de waarde van teller af getrokken
+digitalWrite(pinLijst[teller], HIGH);     // pin met de huidige waarde van teller wordt aangezet
+delay(vertraging);                        // Vertraging
+digitalWrite(pinLijst[teller], LOW);      // pin met de huidige waarde van teller wordt uitgezet
+delay(vertraging);                        // Vertraging
+  }
+}
