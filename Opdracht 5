@@ -1,0 +1,46 @@
+int rLed = 11;                                //Sluit de pin voor de rode led aan op pin 11
+int gLed = 10;                                //Sluit de pin voor de groende led aan op pin 10
+int bLed = 9;                                 //Sluit de pin voor de blauwe led aan op pin 19
+
+//Deze INT's zijn nodig om in de gehele code deze waardes te gebruiken
+int R;                                        // een variabele int met naam R aanmaken
+int G;                                        // een variabele int met naam G aanmaken
+int B;                                        // een variabele int met naam B aanmaken
+ 
+ 
+void setup() { 
+    pinMode(rLed, OUTPUT);                    //rLed definieren als uitgang
+    pinMode(gLed, OUTPUT);                    //gLed definieren als uitgang
+    pinMode(bLed, OUTPUT);                    //bLed definieren als uitgang
+    } 
+
+void loop() { 
+//Alles in de loop herhaalt zicht totdat t de waarde 255 heeft
+//dit geld voor elke for loop
+
+    for(int t = 0; t < 255; t++) {            //als teller 0 is en onder de 255 wordt teller met één opgehoog
+        R--;                                  //de waarde van R - 1
+        G++;                                  //de waarde van G + 1
+        analogWrite(rLed, R);                 //rLed krijgt de als intensiteitswaarde de variable R
+        analogWrite(gLed, G);                 //gLed krijgt de als intensiteitswaarde de variable G 
+        delay(10);                            // vertraging van 10 ms
+    } 
+
+    for(int t = 0; t < 255; t++) {            //als teller 0 is en onder de 255 wordt teller met één opgehoog
+        G--;                                  //de waarde van G - 1
+        B++;                                  //de waarde van B + 1
+        analogWrite(gLed, G);                 //gLed krijgt de als intensiteitswaarde de variable G
+        analogWrite(bLed, B);                 //bLed krijgt de als intensiteitswaarde de variable B 
+        delay(10);                            //vertraging van 10 ms
+    } 
+ 
+
+ 
+    for(int t = 0; t < 255; t++) {            //als teller 0 is en onder de 255 wordt teller met één opgehoog 
+        B--;                                  //de waarde van B - 1
+        R++;                                  //de waarde van R + 1
+        analogWrite(bLed, B);                 //bLed krijgt de als intensiteitswaarde de variable B
+        analogWrite(rLed, R);                 //rLed krijgt de als intensiteitswaarde de variable R 
+        delay(10);                            //vertraging van 10 ms
+    } 
+}
