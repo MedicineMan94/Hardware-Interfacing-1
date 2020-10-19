@@ -1,0 +1,18 @@
+const int ledPin = 11;                        //Sluit led aan op pin 11
+const int knopPin = 2;                        //Sluit knop aan op pin 2
+     bool statusLed = false;                  //Maak boolean aan met startwaarde False
+
+void setup() {
+  pinMode (ledPin, OUTPUT);                   //definieer LED pin als uitgang
+  pinMode (knopPin, INPUT);                   //Definieer Knop pin als ingang
+}
+
+void loop() {
+int statusKnop = digitalRead(knopPin);        //Lees de status van de knop(ingedrukt of niet)
+  if (statusKnop == 1){                       //Als de knop ingedrukt is dan:
+        delay(50);                            //50 ms vertraging na indrukken
+        statusLed = !statusLed;               //Controlleren of de vorige status van de LED aan of uit was, en deze daarna omdraaien
+        digitalWrite(ledPin, statusLed);      //LED aan of uit zetten op basis van de vorige status
+        delay(500);                           //Halve seconde de tijd om gebruiker de kans te geven de knop in te drukken, anders veranderd de status te snel
+  }
+}
