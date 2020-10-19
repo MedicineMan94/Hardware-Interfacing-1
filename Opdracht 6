@@ -1,0 +1,52 @@
+#include <Servo.h>                                    //Bibliotheek toevoegen
+
+Servo servo;                                          // servo object aanmaken om de servo te controleren
+int positie = 0;                                      // variable voor positie servo
+int knopPin1 = 3;                                    //Sluit een knop aan op pin 3
+int knopPin2 = 4;                                     //Sluit een knop aan op pin 4
+
+void setup() {
+  servo.attach(11);                                  //Verbind de servo met pin 11
+  pinMode(knopPin1, INPUT);                          //definieer knop 1 als ingang
+  pinMode(knopPin2, INPUT);                          //definieer knop 1 als ingang
+  
+}
+void loop() {
+  int knop1 = digitalRead(knopPin1);                 //Lees de status van de knop(ingedrukt of niet)
+  int knop2 = digitalRead(knopPin2);                 //Lees de status van de knop(ingedrukt of niet)
+
+//wordt knop 1 ingedrukt dan draait de servo binnen 1 seconde naar 120 graden en binnen 1 seconde weer terug naar 0 graden
+  if(knop1 == HIGH && knop2 == LOW){                 //als knop 1 is ingedrukt en knop 2 niet dan:
+// Methode servoAansturen wordt aangeroepen
+    servoAansturen((1000/120),0);                     //door de 1000ms die nodig zijn te delen door 120, krijg je de hoeveelheid vertraging
+  }
+
+//wordt knop 2 ingedrukt dan draait de servo binnen 0,5 seconde naar 120 graden en binnen 0,5 weer terug naar 0 graden
+  else if(knop2 == HIGH && knop1 == LOW){             //als knop 1 is ingedrukt en knop 2 niet dan:
+// Methode servoAansturen wordt aangeroepen
+    servoAansturen((500/120),0);                      //door de 500ms die nodig zijn te delen door 120, krijg je de hoeveelheid vertraging
+  }
+
+// Worden beide drukknoppen bediend, dan zal de servomotor in 1 s van 0 naar 120⁰ draaien, 2 s in deze stand blijven staan en vervolgens in 1 s terugdraaien naar 0⁰
+  else if(knop1 == HIGH && knop2 == HIGH){ 
+// Methode servoAansturen wordt aangeroepen
+  servoAansturen((1000/120), 2000);                   //door de 1000ms die nodig zijn te delen door 120, krijg je de hoeveelheid vertraging
+  }
+}
+
+//methode voor het aansturen van het servogedrag, de snelheid waarmee dit gebeurt wordt meegestuurd en de eventuele vertragin om het 'hoogste' punt
+//Alles in de loop herhaalt zicht totdat positie de waarde lager dan 120
+ void servoAansturen(int snelheid, int vertraging) {
+   for (positie = 0; positie <= 120; positie++){      //positie van de servo van 0 met 1 omhoog tot 120 is bereikt
+   servo.write(positie);                              //laat de servo naar de positie gaan
+   delay(snelheid);                                   //De 'snelheid' van de beweging
+   }
+   delay(vertraging);                                 // hier de eventuele 'pauze' indien deze wordt meegestuurd
+   
+//positie van de servo van 120 met 1 omlaag tot 0 is bereikt
+//Alles in de loop herhaalt zicht totdat positie de waarde 0 is
+   for (positie = 120; positie >= 0; positie--){      //positie van de servo van 120 met 1 omlaag tot 0 is bereikt
+   servo.write(positie);                              //laat de servo naar de positie gaan
+   delay(snelheid);                                   //De 'snelheid' van de beweging
+   }
+ }
