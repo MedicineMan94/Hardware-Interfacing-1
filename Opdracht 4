@@ -1,0 +1,16 @@
+const int tempPin = A5;                                       //Sluit de temperatuurmeter aan op pin A5
+      int tempWaarde = 0;                                     //Startwaarde voor de temperatuurmeter is 0
+
+void setup() {
+Serial.begin(9600);                                           //Start de seriële communicatie
+}
+
+void loop() {
+
+  tempWaarde = analogRead(tempPin);                           // de waarde van de temperatuurmeter inlezen(tussen de 0 en 1023)
+  int mapWaarde = map(tempWaarde, 0 , 1023, 0, 500);          // temperatuurmeterwaarde omzetten naar een waarde tussen de 0 en 500
+
+  Serial.print (" De temperartuur is: ");                     // tekst: " De temperartuur is: " weergeven op de seriele monitor
+  Serial.println (mapWaarde);                                 // de omgette waarde van de temperatuurmeter weergeven op de seriele monitor
+  delay(500);                                                 // een vertraging van 500ms
+}
