@@ -18,19 +18,19 @@ void loop() {
 //wordt knop 1 ingedrukt dan draait de servo binnen 1 seconde naar 120 graden en binnen 1 seconde weer terug naar 0 graden
   if(knop1 == HIGH && knop2 == LOW){                 //als knop 1 is ingedrukt en knop 2 niet dan:
 // Methode servoAansturen wordt aangeroepen
-    servoAansturen((1000/120),0);                     //door de 1000ms die nodig zijn te delen door 120, krijg je de hoeveelheid vertraging
+    servoAansturen((1000/120),0);                     //door de 1000ms die nodig zijn te delen door 120, krijg je de hoeveelheid vertraging per graad
   }
 
 //wordt knop 2 ingedrukt dan draait de servo binnen 0,5 seconde naar 120 graden en binnen 0,5 weer terug naar 0 graden
   else if(knop2 == HIGH && knop1 == LOW){             //als knop 1 is ingedrukt en knop 2 niet dan:
 // Methode servoAansturen wordt aangeroepen
-    servoAansturen((500/120),0);                      //door de 500ms die nodig zijn te delen door 120, krijg je de hoeveelheid vertraging
+    servoAansturen((500/120),0);                      //door de 500ms die nodig zijn te delen door 120, krijg je de hoeveelheid vertraging per graad
   }
 
 // Worden beide drukknoppen bediend, dan zal de servomotor in 1 s van 0 naar 120⁰ draaien, 2 s in deze stand blijven staan en vervolgens in 1 s terugdraaien naar 0⁰
   else if(knop1 == HIGH && knop2 == HIGH){ 
 // Methode servoAansturen wordt aangeroepen
-  servoAansturen((1000/120), 2000);                   //door de 1000ms die nodig zijn te delen door 120, krijg je de hoeveelheid vertraging
+  servoAansturen((1000/120), 2000);                   //door de 1000ms die nodig zijn te delen door 120, krijg je de hoeveelheid vertraging per graad
   }
 }
 
