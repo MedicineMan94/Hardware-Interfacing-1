@@ -1,0 +1,120 @@
+#include<IRremote.h>                         //Bibliotheek toevoegen
+
+int IrOntvangerPin = 2;                      //Sluit IR ontvanger aan op pin2
+IRrecv irrecv(IrOntvangerPin);               //Maak een nieuwe instantie van "irrecv"en slag deze op in de variable "IRrecv"
+decode_results results;                      //Definieer de variabele "results"om de ontvangen knopcode op te slaan
+
+int iTeller = 0;                             //een variabele aanmaken om te tellen
+int sEen = 0;                                //een variabele aanmaken om de pin van de eerst gekozen LED in op te slaan
+int sTwee = 0;                               //een variabele aanmaken om de pin van de eerst gekozen LED in op te slaan
+
+int ledPin1 = 8;                             //Suit led aan op pin 8 
+int ledPin2 = 9;                             //Suit led aan op pin 9 
+int ledPin3 = 10;                            //Suit led aan op pin 10 
+int ledPin4 = 11;                            //Suit led aan op pin 11 
+
+long int afKnop1 = 0xFF30CF;                 //Variabele om de knopcode tegen te vergelijken voor knop 1 op de afstandsbediening
+long int afKnop2 = 0xFF18E7;                 //Variabele om de knopcode tegen te vergelijken voor knop 2 op de afstandsbediening
+long int afKnop3 = 0xFF7A85;                 //Variabele om de knopcode tegen te vergelijken voor knop 3 op de afstandsbediening
+long int afKnop4 = 0xFF10EF;                 //Variabele om de knopcode tegen te vergelijken voor knop 4 op de afstandsbediening
+
+unsigned long laatsteKeer = 0;               //Variabele om de laatste tijd op te slaan voor gebruik met millis()
+
+void setup() {
+Serial.begin(9600);                         //Start de seriële communicatie 
+irrecv.enableIRIn();                        //Start de IR ontvanger
+
+pinMode (ledPin1, OUTPUT);                  //definieer ledPin1 als uitgang
+pinMode (ledPin2, OUTPUT);                  //definieer ledPin2 als uitgang
+pinMode (ledPin3, OUTPUT);                  //definieer ledPin3 als uitgang
+pinMode (ledPin4, OUTPUT);                  //definieer ledPin4 als uitgang
+}
+
+void loop() {
+
+int statuPin1 = digitalRead(ledPin1);       //Lees de status van de LED (HIGH of LOW)
+int statuPin2 = digitalRead(ledPin2);       //Lees de status van de LED (HIGH of LOW)
+int statuPin3 = digitalRead(ledPin3);       //Lees de status van de LED (HIGH of LOW)
+int statuPin4 = digitalRead(ledPin4);       //Lees de status van de LED (HIGH of LOW)
+
+if (irrecv.decode(&results)){               //Als de IR ontvanger een signaal heeft ontvangen:
+    Serial.println(results.value, HEX);     //Print de ontvangen waarde als hexadecimaal
+    irrecv.resume();                        //IR ontvanger luistert naar nieuwe signalen
+
+//Zolang de waarde van iTeller lager is dan 2 wordt de volgende code uitgevoerd:
+    if (iTeller < 2){                                             
+        if (results.value == afKnop1 && statuPin1 == LOW){        //Als de ontvangen waarde gelijk is aan waarde van afKnop1 & de status van ledPin1 is LOW
+           checkInvoer(ledPin1);                                  //Voer de methode checkInvoer uit en geef de variable ledPin1 mee
+           } 
+           
+        else if (results.value == afKnop2 && statuPin2 == LOW){   //Als de ontvangen waarde gelijk is aan waarde van afKnop2 & de status van ledPin2 is LOW
+           checkInvoer(ledPin2);                                  //Voer de methode checkInvoer uit en geef de variable ledPin2 mee
+           }
+           
+        else if (results.value == afKnop3 && statuPin3 == LOW){   //Als de ontvangen waarde gelijk is aan waarde van afKnop3 & de status van ledPin3 is LOW
+           checkInvoer(ledPin3);                                  //Voer de methode checkInvoer uit en geef de variable ledPin3 mee
+           }
+           
+        else if (results.value == afKnop4 && statuPin4 == LOW){   //Als de ontvangen waarde gelijk is aan waarde van afKnop4 & de status van ledPin4 is LOW
+           checkInvoer(ledPin4);                                  //Voer de methode checkInvoer uit en geef de variable ledPin4 mee    
+           }
+      }
+    
+  }
+  
+//Als de waarde van iTeller gelijk is aan 2 wordt de volgende code uitgevoerd:  
+    if (iTeller == 2){    
+      if (results.value == afKnop1){                //Als de ontvangen waarde gelijk is aan waarde van afKnop1
+          updateLed(100);                           //Voer de methode updateLed uit en geef de knippersnelheid in Miliseconden mee
+          }
+
+      if (results.value == afKnop2){                //Als de ontvangen waarde gelijk is aan waarde van afKnop2
+          updateLed(200);                           //Voer de methode updateLed uit en geef de knippersnelheid in Miliseconden mee
+          }
+
+      if (results.value == afKnop3){                //Als de ontvangen waarde gelijk is aan waarde van afKnop3
+          updateLed(300);                           //Voer de methode updateLed uit en geef de knippersnelheid in Miliseconden mee
+          }
+
+      if (results.value == afKnop4){                //Als de ontvangen waarde gelijk is aan waarde van afKnop4
+          updateLed(400);                           //Voer de methode updateLed uit en geef de knippersnelheid in Miliseconden mee
+          }
+      }
+  }
+
+
+// Methode die controleert welke 2 LED moeten gaan knipperen en deze 2 pinnen opslaat als variabele
+void checkInvoer(int led){                          //de variabele die worden meegestuurd, in dit geval de gekozen LED
+        digitalWrite(led, HIGH);                    //zet de status van de led op HIGH
+        
+        if (sEen == 0){                             //als de waarde van variabele sEen (eerst gekozen led) nog 0 is:
+            sEen = led;                             //sla in sEen de het pin nummer op van de eerst gekozen led
+            iTeller++;                              //Hoog iTeller op met 1 (iTeller is nu 1)
+            }
+                 
+        else{                                       //Anders (sEen is niet gelijk aan 0):
+            sTwee = led;                            //sla in sTwee de het pin nummer op van de als tweede gekozen led
+            iTeller++;                              //Hoog iTeller op met 1 (iTeller is nu 2)
+            }
+        } 
+
+//Methode die met millis() de knippertijd van de gekozen leds regelt
+void updateLed(int knippertijd){                    //de variabele die worden meegestuurd, in dit geval de tijd in miliseconden
+  
+  unsigned long huidigeTijd = millis();             //Variabele huidige tijd aanmaken met de waarde van millis();
+  int statusPin1 = digitalRead(sEen);               //de status van de in de variabele sEen opgeslagen pin opslaan
+  int statusPin2 = digitalRead(sTwee);              //de status van de in de variabele sTwee opgeslagen pin opslaan
+
+  if (huidigeTijd - laatsteKeer >= knippertijd){    //Als huidigeTijd - laatsteKeer groter of gelijk is aan de knippertijd:
+    laatsteKeer = huidigeTijd;                      //Opslaan wanneer de led voor het laats knipperde
+    
+    if (statusPin1 == LOW && statusPin2 == LOW){    //als de status van de gekozen LEDs beide LOW zijn dan:
+        digitalWrite(sEen, HIGH);                   //Pin die de waarde van sEen heeft krijgt status HIGH
+        digitalWrite(sTwee, HIGH);                  //Pin die de waarde van sTwee heeft krijgt status HIGH
+    }
+    else{                                           //Anders (de status van de gekozen LEDs zijn beide HIGH:
+        digitalWrite(sEen, LOW);                    //Pin die de waarde van sEen heeft krijgt status LOW
+        digitalWrite(sTwee, LOW);                   //Pin die de waarde van sTwee heeft krijgt status LOW
+    }
+  }
+}
