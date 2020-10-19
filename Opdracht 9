@@ -1,0 +1,48 @@
+const int rLedPin = 2;                  //Sluit de pin voor de rode lamp aan op pin 2
+const int oLedPin = 3;                  //Sluit de pin voor de oranje lamp op pin 3
+const int gLedPin = 4;                  //Sluit de pin voor de groende led aan op pin 4
+
+     char value = 0;                    //Variabele declareren waar de input vanuit de bluetooth in wordt opgeslagen
+     bool statusLed = false;            //Maak boolean aan met startwaarde False
+
+
+void setup() {
+  Serial.begin(9600);                   //Start de seriële communicatie  
+
+  pinMode (rLedPin, OUTPUT);            //definieer de lamp als uitgang
+  pinMode (oLedPin, OUTPUT);            //definieer de lamp als uitgang
+  pinMode (gLedPin, OUTPUT);            //definieer de lamp als uitgang
+}
+
+void loop() {
+if(Serial.available() > 0){             //als de binnengekomen waarde hoger is dan 0
+
+value = Serial.read();                  //de variabele 'value' krijgt de waarde die binnenkomt vanuit het bluetooth apparaat
+  }
+
+//Als de waarde gelijk is aan 1 staat het verkeerslicht 12s of groen, 6s op oranje en 12s op rood, zolang de waarde 1 is, blijft dit zich herhalen
+  if (value == '1'){                    //Als de waarde gelijk is aan 1
+    digitalWrite(oLedPin, LOW);         //zet oranje lamp uit
+    
+    digitalWrite(gLedPin, HIGH);        //zet groene lamp aan
+    delay(12000);                       //wacht 12 seconden
+    digitalWrite(gLedPin, LOW);         //zet de groene lamp uit
+
+    digitalWrite(oLedPin, HIGH);        //zet oranje lamp aan
+    delay(6000);                        //wacht 6 seconden
+    digitalWrite(oLedPin, LOW);         //zet oranje lamp uit
+
+
+    digitalWrite(rLedPin, HIGH);        //zet rode lamp aan
+    delay(12000);                       //wacht 12 seconden
+    digitalWrite(rLedPin, LOW);         //zet de rode lamp uit
+  }
+
+//als de waarde NIET gelijk is aan 1, knippert het verkeerslicht de orangje lamp iedere seconde (1s aan, 1s uit)
+    else {                              //Anders (waarde van 'value' is gelijk aan 0) dan:
+    statusLed = !statusLed;             //boolean 'statusLed' draait om ('false' wordt 'true' óf 'true' wordt 'false')
+    digitalWrite(oLedPin, statusLed);   //de oranje pin krijgt de status van de boolean(true is AAN, false is UIT)
+    delay(1000);                        //Vertraging van 1 seconden
+  }
+
+}
