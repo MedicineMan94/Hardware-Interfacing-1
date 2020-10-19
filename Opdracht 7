@@ -1,0 +1,38 @@
+#include <Servo.h>                                //Bibliotheek toevoegen    
+                   
+Servo mijnServo;                                  //servo object aanmaken om de servo te controleren
+
+const int trigPin = 10;                           //sluit de trigger (zender) aan op pin 10
+const int echoPin = 9;                            //sluit de echo (ontvanger) aan op pin 9
+
+float tijdsduur;                                  //Variabele voor tijdsduur, float voor een kommagetal
+float afstand;                                    //variabele voor de afstand
+
+                             
+void setup() {
+  Serial.begin(9600);                            //Start de seriële communicatie                       
+  pinMode(trigPin, OUTPUT);                      //definieer de triggerpin als uitgang
+  pinMode(echoPin, INPUT);                       //definieer de echopin als ingang
+  mijnServo.attach(11);                          //Verbind de servo met pin 11
+}
+
+void loop() {
+  digitalWrite(trigPin, LOW);                    //Zet de triggerpin op LOW        
+  delayMicroseconds(2);                          //Wacht 2 microseconde om de triggerpin echt op low te hebben voor de loop doorgaat
+  digitalWrite(trigPin, HIGH);                   //Triggerpin wordt HIGH om ultrasoon geluid te zenden
+  delayMicroseconds(10);                         //wacht 10 microseconden (zendtijd wordt 10 microseconden)
+  digitalWrite(trigPin, LOW);                    //Triggerpin wordt LOW om te stoppen met geluid te zenden
+
+  tijdsduur = pulseIn(echoPin, HIGH);             //Aanvragen van de lengte tijd waarop de echopin HIGH was
+
+  afstand = tijdsduur / 58;                       //Afstand berekenen op bassen van de snelheid van het geluid
+
+ Serial.print("Afstand: ");                       //Print "Afstand: " in seriële monitor
+ Serial.print(afstand);                           //Printde daadwerkelijke afstand in seriële monitor
+ Serial.println("cm");                            //Print "cm" in seriële monitor
+ delay(100);                                      //wacht 100ms
+  
+ int mapWaarde = map(afstand, 4 , 10, 0, 180);    //alle waardes die tussen de 4 en 10 cm zitten omzetten naar een waarde
+                                                  //tussen de 0 en 180, deze staan dan voor de hoeveelheid graden van de servo
+ mijnServo.write(mapWaarde);                      //laat de servo naar de positie gaan
+}
